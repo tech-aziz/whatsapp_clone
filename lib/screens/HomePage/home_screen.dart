@@ -7,6 +7,7 @@ import 'package:whatsapp/services/api_service.dart';
 import 'package:whatsapp/utilities/colors.dart';
 import '../../components/navigates.dart';
 import '../../components/popup_items.dart';
+import '../../utilities/config.dart';
 import '../Settings/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -138,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           backgroundColor: appBg,
           elevation: 0,
           title: Text(
-            'WhatsApp',
+            appName,
             style: TextStyle(
                 color: whiteColor.withOpacity(0.5),
                 fontWeight: FontWeight.w400),
