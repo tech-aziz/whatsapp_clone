@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/models/user_model.dart';
+import 'package:whatsapp/screens/ChatsPage/chat_details.dart';
 import 'package:whatsapp/services/api_service.dart';
 import 'package:whatsapp/utilities/colors.dart';
 
@@ -20,15 +21,13 @@ class _ChatsScreenState extends State<ChatsScreen> {
         child: FutureBuilder(
           future: getUserData(),
           builder: (context, snapshot) {
-            if(snapshot.connectionState == ConnectionState.waiting){
-              return Center(
-                child: CircularProgressIndicator(),
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return  Center(
+                child: CircularProgressIndicator(color: primaryColor),
               );
             }
             return SingleChildScrollView(
-              physics: BouncingScrollPhysics(
-
-              ),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -40,6 +39,12 @@ class _ChatsScreenState extends State<ChatsScreen> {
                     itemBuilder: (context, index) {
                       final data = snapshot.data!.users![index];
                       return ListTile(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => ChatDetails(
+                                  name: '${data.firstName} ${data.lastName}',
+                                  avatar: data.image!)));
+                        },
                         leading: CircleAvatar(
                           backgroundColor: primaryColor,
                           backgroundImage: NetworkImage(data.image!),
@@ -47,8 +52,8 @@ class _ChatsScreenState extends State<ChatsScreen> {
                         title: Row(
                           children: [
                             Text('${data.firstName} ${data.lastName}'),
-                            Spacer(),
-                            Text(
+                            const Spacer(),
+                            const Text(
                               '5:23 PM',
                               style: TextStyle(fontSize: 15),
                             )

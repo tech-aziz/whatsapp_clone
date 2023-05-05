@@ -5,7 +5,9 @@ import 'package:whatsapp/screens/CommunityPage/community_screen.dart';
 import 'package:whatsapp/screens/StatusPage/status_screen.dart';
 import 'package:whatsapp/services/api_service.dart';
 import 'package:whatsapp/utilities/colors.dart';
+import '../../components/navigates.dart';
 import '../../components/popup_items.dart';
+import '../Settings/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -22,50 +24,103 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   var favIcon = Icons.chat;
   List<PopupMenuEntry<dynamic>> popUpItems = [
+    const PopupMenuItem(child: Text('New group')),
+    const PopupMenuItem(child: Text('New broadcast')),
+    const PopupMenuItem(child: Text('Linked device')),
+    const PopupMenuItem(child: Text('Starred message')),
     const PopupMenuItem(child: Text('Settings')),
   ];
 
   @override
   void initState() {
-    // TODO: implement initState
     getUserData();
     print('Index is ${tabController?.index}');
     tabController = TabController(
       initialIndex: 1,
       length: 4,
       vsync: this,
-    )..addListener(() {
+    )
+      ..addListener(() {
         setState(() {
           switch (tabController?.index) {
             case 0:
-              // favIcon = Icons.camera_alt_outlined;
-              popUpItems = [popupMenuItem(title: 'Settings')];
+            // favIcon = Icons.camera_alt_outlined;
+              popUpItems = [
+                popupMenuItem(
+                    value: 0,
+                    title: 'Settings',
+                    child: Setting(),
+                    context: context,
+                    onTap: () {
+                      print('Index 0 tapped');
+                      showDialog(
+                          context: context,
+                          builder: (_) =>
+                              AlertDialog(
+                                title: Text('data'),
+                              ));
+                    })
+              ];
               break;
 
             case 1:
               favIcon = Icons.chat;
               popUpItems = [
-                popupMenuItem(title: 'New group'),
-                popupMenuItem(title: 'New broadcast'),
-                popupMenuItem(title: 'Linked devices'),
-                popupMenuItem(title: 'Starred messages'),
-                popupMenuItem(title: 'Settings'),
+                popupMenuItem(
+                    value: 0,
+                    title: 'New group',
+                    context: context,
+                    onTap: () {
+                      print('Index 1 Tapped');
+                    }),
+                popupMenuItem(
+                    value: 1,
+                    title: 'New broadcast',
+                    context: context,
+                    onTap: () {}),
+                popupMenuItem(
+                    value: 2,
+                    title: 'Linked devices', context: context, onTap: () {}),
+                popupMenuItem(
+                    value: 3,
+                    title: 'Starred messages', context: context, onTap: () {}),
+                popupMenuItem(
+                  value: 4,
+                  title: 'Settings',
+                  child: Setting(),
+                  context: context,
+                  onTap: () {},
+                ),
               ];
               break;
 
             case 2:
               favIcon = Icons.camera_alt_rounded;
               popUpItems = [
-                popupMenuItem(title: 'Status privacy'),
-                popupMenuItem(title: 'Settings'),
+                popupMenuItem(
+                    value: 0,
+                    title: 'Status privacy', context: context, onTap: () {}),
+                popupMenuItem(
+                    value: 1,
+                    title: 'Settings',
+                    child: Setting(),
+                    context: context,
+                    onTap: () {}),
               ];
               break;
 
             case 3:
               favIcon = Icons.call;
               popUpItems = [
-                popupMenuItem(title: 'Clear call log'),
-                popupMenuItem(title: 'Settings'),
+                popupMenuItem(
+                    value: 0,
+                    title: 'Clear call log', context: context, onTap: () {}),
+                popupMenuItem(
+                    value: 1,
+                    title: 'Settings',
+                    child: ChatsScreen(),
+                    context: context,
+                    onTap: () {}),
               ];
               break;
           }
@@ -102,6 +157,34 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 icon: Icon(Icons.search,
                     color: whiteColor.withOpacity(0.5), size: 30)),
             PopupMenuButton(
+              onSelected: (result) {
+                switch (tabController!.index) {
+                  case 0:
+                    switch (result) {
+                      case 0:
+                        navigate(context, Setting());
+                        break;
+                    }
+                    break;
+                  case 1:
+                    switch (result) {
+                      case 0:
+                        print('New Group Tapped');
+                        break;
+                      case 1:
+                        print('New broadcast tapped');
+                        break;
+                      case 2:
+                        print('Linked Device tapped');
+                        break;
+                      case 3:
+                        print('Starred message tapped');
+                        break;
+                      case 4:
+                        navigate(context, Setting());
+                    }
+                }
+              },
               color: whiteColor,
               icon: Icon(
                 Icons.more_vert,
@@ -140,45 +223,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
         floatingActionButton: tabController!.index == 0
             ? Container()
-            : FloatingActionButton(
-                backgroundColor: primaryColor,
+            : tabController!.index == 2
+            ? Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 45,
+              width: 45,
+              child: FloatingActionButton(
+                backgroundColor: appBg,
                 onPressed: () {},
-                child: Icon(favIcon),
-              ));
+                child: const Icon(
+                  Icons.edit,
+                  size: 24,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            FloatingActionButton(
+              backgroundColor: primaryColor,
+              onPressed: () {},
+              child: Icon(favIcon),
+            )
+          ],
+        )
+            : FloatingActionButton(
+          backgroundColor: primaryColor,
+          onPressed: () {},
+          child: Icon(favIcon),
+        ));
   }
-
-// Widget customFloatingAction() {
-//   return FloatingActionButton(
-//     backgroundColor: primaryColor,
-//     child: Icon(favIcon),
-//     onPressed: () {
-//       switch (tabController!.index) {
-//         case 0:
-//           // tabController!.index == 0 ? Container():Container();
-//           break;
-//
-//         case 1:
-//           FloatingActionButton(
-//             onPressed: () {},
-//             child: Icon(favIcon),
-//           );
-//           break;
-//
-//         case 2:
-//           FloatingActionButton(
-//             onPressed: () {},
-//             child: Icon(favIcon),
-//           );
-//           break;
-//
-//         case 3:
-//           FloatingActionButton(
-//             onPressed: () {},
-//             child: Icon(favIcon),
-//           );
-//           break;
-//       }
-//     },
-//   );
-// }
 }
