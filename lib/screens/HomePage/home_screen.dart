@@ -137,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         backgroundColor: background,
         appBar: AppBar(
           backgroundColor: appBg,
+          automaticallyImplyLeading: false,
           elevation: 0,
           title: Text(
             appName,

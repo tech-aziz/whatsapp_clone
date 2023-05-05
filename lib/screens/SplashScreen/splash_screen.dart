@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp/components/navigates.dart';
+import 'package:whatsapp/screens/HomePage/home_screen.dart';
 
 import '../../components/size_box.dart';
 import '../../utilities/colors.dart';
@@ -16,15 +18,18 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  
   @override
   void initState() {
-    Timer(Duration(seconds: 2), () {
-      navigate(context, WelcomeScreen());
+    Future.delayed(const Duration(seconds: 2), () {
+      if (FirebaseAuth.instance.currentUser != null) {
+        navigate(context, const HomeScreen());
+      } else {
+        navigate(context, const WelcomeScreen());
+      }
     });
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width;

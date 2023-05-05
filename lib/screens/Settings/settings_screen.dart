@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp/components/navigates.dart';
 
@@ -10,7 +11,7 @@ class Setting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar('Settings',context),
+      appBar: customAppBar('Settings', context),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         child: Column(
@@ -218,6 +219,35 @@ class Setting extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            InkWell(
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.exit_to_app,
+                    color: Colors.black54,
+                    size: 30.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 2.0, horizontal: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Sign out',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
